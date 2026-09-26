@@ -1,5 +1,3 @@
-Markdown
-
 # 📚 Library Management System (Python OOP)
 
 A console-based Library Management System built with Python using Object-Oriented Programming (OOP) concepts. This project manages student records and book issuances efficiently.
