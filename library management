@@ -1,0 +1,89 @@
+class Student:
+
+    def __init__(self, name, roll_no, student_class):
+        self.name = name
+        self.roll_no = roll_no
+        self.student_class = student_class
+        self.books = []
+
+
+class Library:
+
+    def __init__(self):
+        self.students = {}  # Dictionary to store roll_no -> Student object
+
+    def issue_books(self, name, roll_no, student_class, book_list):
+        # Direct dictionary check (No searching loop required)
+        if roll_no not in self.students:
+            self.students[roll_no] = Student(name, roll_no, student_class)
+
+        # Add books directly to the student record
+        self.students[roll_no].books.extend(book_list)
+        print(f"✅ {len(book_list)} book(s) issued successfully to {name}!")
+
+    def show_summary(self):
+        print("\n==================================================")
+        print("                TODAY'S SUMMARY                   ")
+        print("==================================================")
+
+        total_books = 0
+        for s in self.students.values():
+            count = len(s.books)
+            total_books += count
+            books_str = ", ".join(s.books)
+            print(
+                f"• Name: {s.name} | Class: {s.student_class} | Roll No:"
+                f" {s.roll_no} | Books ({count}): {books_str}"
+            )
+
+        print("--------------------------------------------------")
+        print(f"Total Students : {len(self.students)}")
+        print(f"Total Books    : {total_books}")
+        print("==================================================")
+
+
+def main():
+    library = Library()
+
+    while True:
+        print("\n--- Enter Details ---")
+        student_class = input("Enter Student Class: ").strip()
+        name = input("Enter Student Name: ").strip()
+        roll_no = input("Enter Roll No: ").strip()
+
+        # Input number of books
+        while True:
+            try:
+                num_books = int(
+                    input("How many books do you want to issue? ").strip()
+                )
+                if num_books > 0:
+                    break
+                print("❌ Please enter a number greater than 0.")
+            except ValueError:
+                print("❌ Invalid input! Please enter a valid number.")
+
+        # Get book names dynamically
+        book_list = []
+        for i in range(1, num_books + 1):
+            book_name = input(f"Enter Name for Book #{i}: ").strip()
+            book_list.append(book_name)
+
+        # Issue books
+        library.issue_books(name, roll_no, student_class, book_list)
+
+        choice = (
+            input("\nDo you want to process another student? (yes/no): ")
+            .strip()
+            .lower()
+        )
+        if choice != "yes":
+            break
+
+    # Display summary report
+    library.show_summary()
+
+
+# Main execution entry point
+if __name__ == "__main__":
+    main()
